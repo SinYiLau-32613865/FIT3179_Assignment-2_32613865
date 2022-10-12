@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 420,
+  "height": 300,
+  "title": "Population versus IQ",
+  "data": {
+    "url": "https://raw.githubusercontent.com/SinYiLau-32613865/FIT3179_Assignment-2_32613865/main/csvData.csv"
+  },
+  "params": [
+    {
+      "name": "Continent_selection",
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "labels": [
+          "Show All",
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "name": "Continent Selection: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "Continent_selection == null || datum.Continent == Continent_selection"
+    }
+  ],
+  "mark": "circle",
+  "encoding": {
+    "x": {
+      "field": "IQ",
+      "type": "quantitative",
+      "title": "IQ",
+      "axis": {"tickCount": 7}
+    },
+    "y": {"field": "pop2022", "type": "quantitative", "axis": {"tickCount": 6}},
+    "color": {
+      "field": "Continent",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "North America",
+          "South America",
+          "Europe",
+          "Africa",
+          "Asia",
+          "Oceania"
+        ],
+        "range": [
+          "#e41a1c",
+          "#984ea3",
+          "#ff7f00",
+          "#a6cee3",
+          "#377eb8",
+          "#a65628"
+        ]
+      }
+    },
+    "opacity": {"value": 0.6},
+    "tooltip": [
+      {"field": "Continent", "type": "nominal"},
+      {"field": "Country", "type": "nominal"},
+      {"field": "IQ", "type": "quantitative"}
+    ]
+  },
+  "config": {}
+}
