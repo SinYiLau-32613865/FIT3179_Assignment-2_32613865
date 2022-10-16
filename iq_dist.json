@@ -1,0 +1,59 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 550,
+  "height": 250,
+  "data": {
+    "url": "https://raw.githubusercontent.com/SinYiLau-32613865/FIT3179_Assignment-2_32613865/main/IQ_dist.csv"
+  },
+  "layer": [
+    {
+      "params": [
+        {"name": "pts", "select": {"type": "point", "on": "mouseover"}}
+      ],
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "Range",
+          "type": "nominal",
+          "sort": [
+            "Scores under 70",
+            "70 - 79",
+            "80 - 89",
+            "90 -110",
+            "111 - 120",
+            "121 - 130"
+          ],
+          "title": "IQ Range"
+        },
+        "y": {
+          "field": "Population (%)",
+          "type": "quantitative",
+          "title": "World Population (%)"
+        },
+        "color": {
+          "condition": {
+            "param": "pts"
+          },
+          "value": "grey"
+        },
+        "tooltip": [
+          {"field": "Range", "type": "nominal", "title": "IQ Range"},
+          {"field": "Classification", "type": "nominal"},
+          {"field": "Population (%)", "type": "quantitative"},
+          {"field": "Percentile", "type": "quantitative"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -12,
+        "fontSize": 11.5,
+        "fontStyle": "italic"
+      }
+    }
+  ],
+  "config": {}
+}

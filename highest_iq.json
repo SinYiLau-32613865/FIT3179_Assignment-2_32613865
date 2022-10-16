@@ -1,0 +1,67 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 305,
+  "height": 300,
+  "title":"Top 10 Countries with the Highest Average IQ",
+  "data": {
+    "url": "https://raw.githubusercontent.com/SinYiLau-32613865/FIT3179_Week10_Homework/main/csvData.csv"
+  },
+  "transform": [
+    {"window": [{"op": "count", "as": "count"}]},
+    {"filter": "datum.count <= 10"},
+    {"calculate": "1000*datum.pop2022", "as": "Population"}
+  ],
+  "encoding": {
+    "x": {"field": "IQ", "type": "quantitative"},
+    "y": {
+      "field": "Country",
+      "type": "nominal",
+      "sort": []
+    },
+    "color": {
+     "field": "Continent",
+      "type": "nominal",
+      "scale": {
+      "domain": [
+              "Europe",
+              "Asia"
+              ],
+              "range": [
+              "#ff7f00",
+              "#377eb8"
+              ]
+      }
+      }
+  },
+  "layer": [
+    {
+      "mark": "bar",
+      "params":[
+      {
+      "name": "continent_highlight",
+      "select": {"type": "point", "fields": ["Continent"] },
+      "bind": "legend"
+      }],
+      "encoding": {
+        "opacity": {
+        "condition": {"param": "continent_highlight", "value": 1},
+        "value": 0.4
+        },
+        "tooltip": [
+          {"field": "Country", "type": "nominal"},
+          {"field": "IQ", "type": "quantitative"},
+          {"field": "Population", "type": "quantitative","format":","}
+
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "align": "left", "dx": -45,"fontWeight":"bold","fontSize":"12"},
+      "encoding": {"text": {"field": "IQ", "type": "quantitative"},
+        "color": {
+          "value": "#FAFAFA"
+        }}
+    }
+  ],
+  "config": {}
+}

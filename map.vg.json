@@ -1,0 +1,89 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 800,
+  "height": 400,
+  "params": [
+    {
+      "name": "center_to",
+      "value": [0, 0],
+      "bind": {
+        "input": "select",
+        "options": [
+          [0, 0],
+          [20, 0],
+          [100, 28],
+          [5, 38],
+          [-100, 30],
+          [-70, -20],
+          [145, -30]
+        ],
+        "labels": [
+          "Show All",
+          "Africa",
+          "Asia",
+          "Europe",
+          "North America",
+          "South America",
+          "Oceania"
+        ],
+        "name": "Continent: "
+      }
+    },
+    {
+      "name": "zoom_level",
+      "value": 150,
+      "bind": {
+        "input": "range",
+        "min": 150,
+        "max": 280,
+        "step": 10,
+        "name": "Zoom: "
+      }
+    },
+    {"name": "highlight", "select": {"type": "point", "on": "mouseover"}}
+  ],
+  "projection": {
+    "type": "equalEarth",
+    "scale": {"expr": "zoom_level"},
+    "center": {"expr": "center_to"},
+    "fit": {"expr": "highlight"}
+  },
+  "data": {
+    "url": "https://raw.githubusercontent.com/SinYiLau-32613865/FIT3179_Assignment-2_32613865/main/ne_110m.topojson",
+    "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+  },
+  "transform": [
+    {
+      "lookup": "properties.NAME",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/SinYiLau-32613865/FIT3179_Week10_Homework/main/csvData.csv"
+        },
+        "key": "Country",
+        "fields": ["IQ", "Continent", "pop2022"]
+      }
+    }
+  ],
+  "mark": {"type": "geoshape", "stroke": "black", "cursor": "pointer"},
+  "encoding": {
+    "color": {
+      "field": "IQ",
+      "type": "quantitative",
+      "condition": {"test": "datum['IQ'] == null ", "value": "lightgrey"}
+    },
+    "tooltip": [
+      {"field": "properties.NAME", "type": "nominal", "title": "Country"},
+      {"field": "Continent", "type": "nominal"},
+      {"field": "IQ", "type": "quantitative"}
+    ],
+    "strokeWidth": {
+      "condition": [{"param": "highlight", "empty": false, "value": 1}],
+      "value": 0
+    }
+  },
+  "config": {
+    "mark": {"invalid": null},
+    "axis": {"grid": true, "tickBand": "extent"},
+    "scale": {"bandPaddingInner": 0.2}
+  }
+}
